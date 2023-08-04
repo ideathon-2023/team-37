@@ -1,42 +1,104 @@
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
-<html lang="en" dir="ltr">
-   <head>
-      <meta charset="utf-8">
-      <title>Popup Login Form Design | CodingNepal</title>
-      <link rel="stylesheet" href="style.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-   </head>
-   <body>
-      <div class="center">
-         <input type="checkbox" id="show">
-         <label for="show" class="show-btn">View Form</label>
-         <div class="container">
-            <label for="show" class="close-btn fas fa-times" title="close"></label>
-            <div class="text">
-               Login Form
-            </div>
-            <form action="#">
-               <div class="data">
-                  <label>Email or Phone</label>
-                  <input type="text" required>
-               </div>
-               <div class="data">
-                  <label>Password</label>
-                  <input type="password" required>
-               </div>
-               <div class="forgot-pass">
-                  <a href="#">Forgot Password?</a>
-               </div>
-               <div class="btn">
-                  <div class="inner"></div>
-                  <button type="submit">login</button>
-               </div>
-               <div class="signup-link">
-                  Not a member? <a href="#">Signup now</a>
-               </div>
-            </form>
-         </div>
-      </div>
-   </body>
+<html>
+<head>
+    <title>Reaction Time Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #startButton {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw; /* Width will fit the entire screen */
+            height: calc(100vh - 200px); /* Almost the entire height below the upper buttons */
+            background-color: blue;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        #gamePracticeButton {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="position: absolute; top: 10px; left: 10px;">Reaction Time Test</h1>
+    <a href="signup.html" style="position: absolute; top: 10px; right: 90px; text-decoration: none;">
+        <button id="signupButton">Sign Up</button>
+    </a>
+    <button id="gamePracticeButton" onclick="goToGamePractice()">Game Practice</button>
+    <button id="loginButton" style="position: absolute; top: 10px; right: 10px;" onclick="goToLogin()">Login</button>
+    <button id="startButton" onclick="startTest()">Start</button>
+
+    <script>
+        let startTime, endTime;
+        let isStarted = false;
+        let timer;
+
+        function startTest() {
+            if (!isStarted) {
+                isStarted = true;
+                document.getElementById("startButton").innerText = "Right Click when green";
+                document.getElementById("startButton").style.backgroundColor = "red";
+                timer = setTimeout(holdUp, getRandomTime());
+            } else {
+                clearTimeout(timer);
+                if (document.getElementById("startButton").style.backgroundColor === "green") {
+                    endTime = Date.now();
+                    const reactionTime = endTime - startTime;
+                    document.getElementById("startButton").innerText = reactionTime + " ms";
+                    document.getElementById("startButton").style.backgroundColor = "blue";
+                    document.getElementById("startButton").addEventListener("click", resetTest);
+                } else {
+                    alert("Hold up! Restarting the test.");
+                    resetTest();
+                }
+            }
+        }
+
+        function holdUp() {
+            startTime = Date.now();
+            document.getElementById("startButton").innerText = "";
+            document.getElementById("startButton").style.backgroundColor = "green";
+        }
+
+        function resetTest() {
+            document.getElementById("startButton").innerText = "Start";
+            document.getElementById("startButton").style.backgroundColor = "blue";
+            isStarted = false;
+            document.getElementById("startButton").removeEventListener("click", resetTest);
+        }
+
+        function getRandomTime() {
+            return Math.floor(Math.random() * 4000); // Random time between 0 and 4000 ms (4 seconds)
+        }
+
+        function goToGamePractice() {
+            window.location.href = "game_practice_play.html";
+        }
+
+        function goToLogin() {
+            window.location.href = "login.html";
+        }
+    </script>
+</body>
 </html>

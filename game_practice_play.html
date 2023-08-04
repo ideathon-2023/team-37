@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Practice</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .game-button {
+            padding: 10px 20px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            width: calc(100vw / 3); /* Divide the width equally for three buttons */
+            aspect-ratio: 16 / 9; /* Set the aspect ratio to 16:9 */
+            margin: 20px;
+            background-color: #4CAF50;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .valorant-button {
+            background-image: url('https://images2.alphacoders.com/132/1322753.jpeg');
+        }
+        .csgo-button {
+            background-image: url('https://images7.alphacoders.com/587/587593.png');
+        }
+        #mainButton {
+            width: 200px;
+            height: 100px;
+            background-color: blue;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            margin-top: 50px;
+        }
+        #instruction {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        #timeDisplay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+        }
+        #reactionContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: gray;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-size: 24px;
+            color: white;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Practice</h1>
+    <div class="game-button valorant-button" onclick="startReactionTest('Valorant')"></div>
+    <div class="game-button csgo-button" onclick="startReactionTest('CSGO')"></div>
+
+    <div id="reactionContainer">
+        <div id="reactionInstruction">Press the button or right-click</div>
+        <div id="timeDisplay"></div>
+    </div>
+
+    <script>
+        let startTime, endTime;
+        let timer, totalReactionTime = 0, numReactions = 0;
+        let isStarted = false;
+
+        function startReactionTest(buttonName) {
+            document.body.style.backgroundColor = "gray";
+            document.querySelectorAll(".game-button").forEach((btn) => btn.style.display = "none");
+            document.getElementById("reactionContainer").style.display = "flex";
+
+            isStarted = true;
+            document.getElementById("reactionInstruction").innerText = "Press the " + buttonName + " button";
+            document.getElementById("timeDisplay").innerText = "";
+
+            setTimeout(displayRandomButton, 1000); // Display a random button or mouse click after 1 second
+            setTimeout(endReactionTest, 60000); // End the reaction test after 60 seconds (60000 ms)
+        }
+
+        function endReactionTest() {
+            isStarted = false;
+            const averageReactionTime = totalReactionTime / numReactions;
+            alert("Practice ended.\nAverage reaction time: " + averageReactionTime.toFixed(2) + " ms");
+
+            document.body.style.backgroundColor = "#f0f0f0";
+            document.getElementById("reactionContainer").style.display = "none";
+            document.querySelectorAll(".game-button").forEach((btn) => btn.style.display = "block");
+
+            totalReactionTime = 0;
+            numReactions = 0;
+        }
+
+        function displayRandomButton() {
+            const buttons = [
+                '1', '2', '3', '4', 'q', 'w', 'e', 'r', 'a', 's', 'd', 'f', 'g',
+                'caps lock', 'shift', 'z', 'x', 'c', 'v', 'b', 'ctrl', 'alt',
+                'space bar', 'right click'
+            ];
+            const randomButton = buttons[Math.floor(Math.random() * buttons.length)];
+            const buttonElement = document.createElement('div');
+            buttonElement.classList.add('game-button');
+            buttonElement.innerText = randomButton;
+            buttonElement.onclick = function () {
+                if (isStarted) {
+                    const reactionTime = Date.now() - startTime;
+                    totalReactionTime += reactionTime;
+                    numReactions++;
+                    document.getElementById("timeDisplay").innerText = "Reaction time: " + reactionTime + " ms";
+                    setTimeout(displayRandomButton, 1000); // Display a new random button after 1 second
+                }
+            };
+            document.getElementById("reactionContainer").innerHTML = "";
+            document.getElementById("reactionContainer").appendChild(buttonElement);
+            startTime = Date.now();
+        }
+    </script>
+</body>
+</html>
