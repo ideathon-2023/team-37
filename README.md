@@ -2,7 +2,9 @@
  - Chetanya Mahana
  - Sambhav Jain
  - Pranav Malhotra
-Idea:
+
+
+# Idea:
 A Website which tells the user his/her reaction time not only on mouse clicks but keyboard buttons too.
 This website is highly engaging and also help improve reaction times especially for gamers.
 
